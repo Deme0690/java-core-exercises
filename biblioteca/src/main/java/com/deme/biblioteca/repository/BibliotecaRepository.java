@@ -1,3 +1,8 @@
+/*
+    Esta clase solamente sabe: guardar, buscar y obtener
+    Esto se ocupa de: Dame el libro cuyo ISBN sea X
+ */
+
 package com.deme.biblioteca.repository;
 
 import com.deme.biblioteca.model.Libro;
@@ -5,14 +10,10 @@ import com.deme.biblioteca.model.Libro;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 public class BibliotecaRepository {
 
     private final List<Libro> libros = new ArrayList<>();
-    private Stream<Libro> librosStream =
-            libros.stream();
-
 
     public void agregarLibro(Libro libro) {
         libros.add(libro);
@@ -24,10 +25,18 @@ public class BibliotecaRepository {
             Optional.empty()       → no encontrado
          */
 
-        //Operando sobre el stream
-        return librosStream
+        //Crear stream de libros y operar.
+        return libros.stream()
                 .filter(libro-> libro.getIsbn().equals(isbn))
                 .findFirst();
+
+        /*
+        Similar a:
+        private Stream<Libro> librosStream = libros.stream();
+        librosStream
+            .filter(...)
+            .findFirst(...);
+        */
     }
 
     public List<Libro> obtenerTodos() {
