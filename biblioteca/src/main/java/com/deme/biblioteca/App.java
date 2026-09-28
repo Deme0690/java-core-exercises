@@ -1,8 +1,10 @@
 package com.deme.biblioteca;
 import com.deme.biblioteca.repository.BibliotecaRepository;
 import com.deme.biblioteca.model.Libro;
+import com.deme.biblioteca.service.LibroNoExisteException;
 import com.deme.biblioteca.service.LibroService;
 import com.deme.biblioteca.service.LibroYaExisteException;
+import com.deme.biblioteca.service.LibroNoDisponibleException;
 
 import java.time.Year;
 
@@ -27,7 +29,7 @@ public class App {
 
         try {
             service.registrarLibro(libro1);
-            System.out.println("Libro registrado com éxito.");
+            System.out.println("Libro registrado con éxito.");
         }catch (LibroYaExisteException e) {
             System.out.println("Error: " +e.getMessage());
         }
@@ -37,6 +39,22 @@ public class App {
             System.out.println("Libro registrado con éxito");
         }catch (LibroYaExisteException e) {
             System.out.println("Error: "+ e.getMessage());
+        }
+
+        // Primer préstamo
+        try {
+            service.prestarLibro(libro1.getIsbn());
+            System.out.println("Libro prestado con éxito.");
+        } catch (LibroNoExisteException | LibroNoDisponibleException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        // Segundo préstamo
+        try {
+            service.prestarLibro(libro1.getIsbn());
+            System.out.println("Libro prestado con éxito.");
+        } catch (LibroNoExisteException | LibroNoDisponibleException e) {
+            System.out.println("Error: " + e.getMessage());
         }
 
     }

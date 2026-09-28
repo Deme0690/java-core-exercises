@@ -26,6 +26,26 @@ public class LibroService {
         }
         // El ISBN aún no existe, se puede registrar
         repository.agregarLibro(libro);
+    }
+
+    public void prestarLibro(String isbn) {
+        //Buscamos la existencia del libro
+        Optional<Libro> optLibro = repository.buscarPorISBN(isbn);
+
+        if (optLibro.isEmpty()) {
+            // El libro no se encuentra registrado
+            throw new LibroNoExisteException("Libro no encontrado");
+        }
+
+        // El libro existe. Buscamos disponibilidad.
+        Libro libro = optLibro.get();
+
+        if (!libro.isDisponible()) {
+            throw new LibroNoDisponibleException("Libro no disponible");
+        }
+
+        // Se puede prestar el libro
+        libro.setDisponible(false);
 
     }
 }
